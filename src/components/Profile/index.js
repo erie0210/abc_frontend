@@ -1,11 +1,22 @@
 import * as Font from "expo-font";
 
-import { Dimensions, Image, ScrollView, Text, TextInput } from "react-native";
+import {
+  Alert,
+  Dimensions,
+  Image,
+  Pressable,
+  ScrollView,
+  Text,
+  TextInput,
+} from "react-native";
 import React, { useState } from "react";
+import { getUser, updateUser } from "../../../apis";
 
 import AppLoading from "expo-app-loading";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import Btn from "./Btn";
 import styled from "styled-components/native";
+import { useNavigation } from "@react-navigation/native";
 
 const WIDTH = Dimensions.get("screen").width;
 const HEIGHT = Dimensions.get("screen").height;
@@ -17,11 +28,30 @@ const Wrapper = styled.View`
   justify-content: space-around;
   margin-top: ${HEIGHT * 0.01}px;
 `;
+const BtnWrapper = styled.View`
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-top: ${HEIGHT * 0.01}px;
+`;
+const BtnContainer = styled.View`
+  width: ${WIDTH * 0.3}px;
+  height: ${WIDTH * 0.5 * 0.3}px;
+  border-radius: 10px;
+  border: 1.5px black solid;
+  margin: 4px;
+`;
+const BtnText = styled.Text`
+  margin: auto;
+  font-family: "PoorStory";
+  font-size: 12px;
+`;
 
 export default Profile = () => {
   const [nickName, setNickName] = useState("");
-  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const [loaded] = Font.useFonts({
     Dela: require("../../../assets/fonts/DelaGothicOne-Regular.ttf"),
@@ -29,8 +59,29 @@ export default Profile = () => {
     DoHyeon: require("../../../assets/fonts/DoHyeon-Regular.ttf"),
   });
 
-  const loadAssets = () => {};
+  const loadAssets = async () => {
+    const loadUser = await getUser();
+    console.log(loadUser.nickname);
+    await AsyncStorage.setItem("UserInfo");
+    // const userData = await AsyncStorage.getItem("UserInfo");
+    // const user = JSON.parse(userData).data.data.user;
+    setNickName(loadUser.nickname);
+  };
   const onFinish = () => {};
+
+  const handleEdit = async () => {
+    const res = await updateUser(nickName, password);
+    // console.log("res in patch user info: ", res.data.data);
+    Alert.alert("수정되었습니다.");
+    navigation.goBack();
+  };
+  const cancleMembership = () => {};
+
+  const navigation = useNavigation();
+  const handleLogout = async () => {
+    await AsyncStorage.removeItem("UserInfo");
+    navigation.replace("SNS", {});
+  };
 
   if (loaded) {
     return (
@@ -54,21 +105,7 @@ export default Profile = () => {
             height: WIDTH * 0.5 * 0.4,
             borderBottomColor: "lightgray",
             borderBottomWidth: 1,
-            fontSize: 12,
-            textAlign: "center",
-            fontFamily: "PoorStory",
-          }}
-        />
-        <TextInput
-          placeholder="이메일 수정"
-          value={email}
-          onChangeText={(cur) => setEmail(cur)}
-          style={{
-            width: WIDTH * 0.7,
-            height: WIDTH * 0.5 * 0.4,
-            borderBottomColor: "lightgray",
-            borderBottomWidth: 1,
-            fontSize: 12,
+            fontSize: 20,
             textAlign: "center",
             fontFamily: "PoorStory",
           }}
@@ -89,8 +126,8 @@ export default Profile = () => {
         />
         <TextInput
           placeholder="비밀번호 확인"
-          value={password}
-          onChangeText={(cur) => setPassword(cur)}
+          value={confirmPassword}
+          onChangeText={(cur) => setConfirmPassword(cur)}
           style={{
             width: WIDTH * 0.7,
             height: WIDTH * 0.5 * 0.4,
@@ -101,7 +138,27 @@ export default Profile = () => {
             fontFamily: "PoorStory",
           }}
         />
-        <Btn />
+
+        {/* 유저 정보 수정 */}
+        <BtnWrapper>
+          <Pressable onPress={handleEdit}>
+            <BtnContainer>
+              <BtnText>수정하기</BtnText>
+            </BtnContainer>
+          </Pressable>
+
+          <Pressable onPress={cancleMembership}>
+            <BtnContainer>
+              <BtnText>탈퇴하기</BtnText>
+            </BtnContainer>
+          </Pressable>
+
+          <Pressable onPress={handleLogout}>
+            <BtnContainer>
+              <BtnText>로그아웃</BtnText>
+            </BtnContainer>
+          </Pressable>
+        </BtnWrapper>
       </Wrapper>
     );
   } else {

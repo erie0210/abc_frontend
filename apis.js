@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { store } from "./Redux/store";
 
@@ -250,6 +251,29 @@ export const login = async (email, passwd) => {
   return result;
 };
 
+// *  회원가입
+export const register = async (email, password, nickName) => {
+  const body = {
+    email: email,
+    passwd: password,
+    nickname: nickName,
+  };
+  let result;
+  await axios
+    .post(`${ngrok_URL}/users`, body)
+    .then((res) => {
+      result = { status: true, data: res.data };
+      // console.log("login axios post: ", res.data);
+      return res.data;
+    })
+    .catch((error) => {
+      result = { status: false, data: error.response.data };
+      // console.log("error ", error.response.data);
+      return error.response.data;
+    });
+  return result;
+};
+
 // * 이미지를 s3에 올리고 URL 생성
 export const uploadToS3 = async (base64) => {
   const headers = {
@@ -267,6 +291,41 @@ export const uploadToS3 = async (base64) => {
     );
     // console.log("upload To S3 result: ", result.data);
     return result.data;
+  } catch (error) {
+    console.warn(error);
+  }
+};
+
+// * 회원 정보 수정
+export const updateUser = async (nickName, password) => {
+  const userData = await AsyncStorage.getItem("UserInfo");
+  const user = JSON.parse(userData).data.data.user;
+
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${accessToken}`,
+  };
+  const body = {
+    nickname: nickName,
+    passwd: password,
+  };
+  const tmpId = "615269c6ab6c994070bc1538";
+  try {
+    return await axios.patch(`${ngrok_URL}/users/update/${tmpId}`, body, {
+      headers: headers,
+    });
+  } catch (error) {
+    console.warn(error);
+  }
+};
+
+// * 특정 유저 정보 가져오기
+export const getUser = async () => {
+  const tmpId = "615269c6ab6c994070bc1538";
+  try {
+    const res = await axios.get(`${ngrok_URL}/users/update/${tmpId}`);
+    // console.log("getUser res", res.data);
+    return res.data.data;
   } catch (error) {
     console.warn(error);
   }

@@ -76,6 +76,7 @@ export default Profile = () => {
     const res = await login(email, passwd);
     if (res.status === true) {
       await AsyncStorage.setItem("UserInfo", JSON.stringify(res));
+
       console.log("로그인 통신 성공");
       navigation.replace("Tab");
     } else {
@@ -87,69 +88,71 @@ export default Profile = () => {
 
   if (loaded) {
     return (
-      <Wrapper>
-        <RegisterInfo>
-          {/* ABC 프로젝트 이미지 */}
-          <Image
-            source={{
-              uri: "https://thumbs.dreamstime.com/b/bread-icons-bakery-products-vector-set-illustration-74203117.jpg",
-            }}
+      <ScrollView>
+        <Wrapper>
+          <RegisterInfo>
+            {/* ABC 프로젝트 이미지 */}
+            <Image
+              source={{
+                uri: "https://thumbs.dreamstime.com/b/bread-icons-bakery-products-vector-set-illustration-74203117.jpg",
+              }}
+              style={{
+                width: WIDTH * 0.5,
+                height: WIDTH * 0.5,
+                borderRadius: WIDTH * 0.25,
+                margin: 40,
+              }}
+            />
+          </RegisterInfo>
+
+          {/* 소셜 로그인 */}
+          {/* <Btn /> */}
+
+          {/* Email 로그인 */}
+          <TextInput
+            placeholder="이메일 입력"
+            value={email}
+            onChangeText={(cur) => setEmail(cur)}
             style={{
-              width: WIDTH * 0.5,
-              height: WIDTH * 0.5,
-              borderRadius: WIDTH * 0.25,
-              margin: 40,
+              width: WIDTH * 0.7,
+              height: WIDTH * 0.5 * 0.4,
+              borderBottomColor: "lightgray",
+              borderBottomWidth: 1,
+              fontSize: 12,
+              textAlign: "center",
+              fontFamily: "PoorStory",
             }}
           />
-        </RegisterInfo>
+          <TextInput
+            placeholder="비밀번호"
+            value={passwd}
+            onChangeText={(cur) => setPasswd(cur)}
+            style={{
+              width: WIDTH * 0.7,
+              height: WIDTH * 0.5 * 0.4,
+              borderBottomColor: "lightgray",
+              borderBottomWidth: 1,
+              fontSize: 12,
+              textAlign: "center",
+              fontFamily: "PoorStory",
+            }}
+          />
 
-        {/* 소셜 로그인 */}
-        {/* <Btn /> */}
-
-        {/* Email 로그인 */}
-        <TextInput
-          placeholder="이메일 입력"
-          value={email}
-          onChangeText={(cur) => setEmail(cur)}
-          style={{
-            width: WIDTH * 0.7,
-            height: WIDTH * 0.5 * 0.4,
-            borderBottomColor: "lightgray",
-            borderBottomWidth: 1,
-            fontSize: 12,
-            textAlign: "center",
-            fontFamily: "PoorStory",
-          }}
-        />
-        <TextInput
-          placeholder="비밀번호"
-          value={passwd}
-          onChangeText={(cur) => setPasswd(cur)}
-          style={{
-            width: WIDTH * 0.7,
-            height: WIDTH * 0.5 * 0.4,
-            borderBottomColor: "lightgray",
-            borderBottomWidth: 1,
-            fontSize: 12,
-            textAlign: "center",
-            fontFamily: "PoorStory",
-          }}
-        />
-
-        {/* 로그인 회원가입 버튼 */}
-        <BtnContainer>
-          <Pressable onPress={handleRegister}>
-            <Btn>
-              <BtnText>회원가입</BtnText>
-            </Btn>
-          </Pressable>
-          <Pressable onPress={handleLogin}>
-            <Btn>
-              <BtnText>로그인</BtnText>
-            </Btn>
-          </Pressable>
-        </BtnContainer>
-      </Wrapper>
+          {/* 로그인 회원가입 버튼 */}
+          <BtnContainer>
+            <Pressable onPress={handleRegister}>
+              <Btn>
+                <BtnText>회원가입</BtnText>
+              </Btn>
+            </Pressable>
+            <Pressable onPress={handleLogin}>
+              <Btn>
+                <BtnText>로그인</BtnText>
+              </Btn>
+            </Pressable>
+          </BtnContainer>
+        </Wrapper>
+      </ScrollView>
     );
   } else {
     return (
