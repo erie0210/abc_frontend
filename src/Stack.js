@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 import AppLoading from "expo-app-loading";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import Calculator from "./components/Calculator/Container";
 import PersonalDetailed from "./components/PersonalDetailed";
 import Profile from "./components/Profile";
@@ -14,9 +15,12 @@ import { createStackNavigator } from "@react-navigation/stack";
 const Stack = createStackNavigator();
 
 export default Basic = () => {
-  const [userInfo, setUserInfo] = useState(true);
+  const [userInfo, setUserInfo] = useState(false);
   const [ready, setReady] = useState(false);
   const loadAssets = async () => {
+    const loginInfo = await AsyncStorage.getItem("UserInfo");
+    setUserInfo(loginInfo);
+    // console.log("loginInfo: ", loginInfo, userInfo);
     // try {
     // const result = await AsyncStorage.getItem("USER_INFO");
     // if (result !== null) {
@@ -45,11 +49,19 @@ export default Basic = () => {
           <Stack.Screen name="Calculator" component={Calculator} />
           <Stack.Screen name="PersonalDetailed" component={PersonalDetailed} />
           <Stack.Screen name="Profile" component={Profile} />
+          <Stack.Screen name="SNS" component={SNS} />
+          <Stack.Screen name="Register" component={Register} />
         </>
       ) : (
         <>
           <Stack.Screen name="SNS" component={SNS} />
           <Stack.Screen name="Register" component={Register} />
+          <Stack.Screen name="Tab" component={Tab} />
+          <Stack.Screen name="PublicRecipes" component={PublicRecipes} />
+          <Stack.Screen name="PublicDetailed" component={PublicDetailed} />
+          <Stack.Screen name="Calculator" component={Calculator} />
+          <Stack.Screen name="PersonalDetailed" component={PersonalDetailed} />
+          <Stack.Screen name="Profile" component={Profile} />
         </>
       )}
     </Stack.Navigator>

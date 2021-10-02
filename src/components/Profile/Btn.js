@@ -1,10 +1,12 @@
 import * as Font from "expo-font";
 
-import { Dimensions, ScrollView, Text } from "react-native";
+import { Dimensions, Pressable, ScrollView, Text } from "react-native";
 import React, { useState } from "react";
 
 import AppLoading from "expo-app-loading";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import styled from "styled-components/native";
+import { useNavigation } from "@react-navigation/native";
 
 const WIDTH = Dimensions.get("screen").width;
 const HEIGHT = Dimensions.get("screen").height;
@@ -38,21 +40,35 @@ export default Btn = () => {
 
   const loadAssets = () => {};
   const onFinish = () => {};
+  const handleEdit = () => {};
+  const cancleMembership = () => {};
+
+  const navigation = useNavigation();
+  const handleLogout = async () => {
+    await AsyncStorage.removeItem("UserInfo");
+    navigation.replace("SNS", {});
+  };
 
   if (loaded) {
     return (
       <Wrapper>
-        <BtnContainer>
-          <BtnText>수정하기</BtnText>
-        </BtnContainer>
+        <Pressable onPress={handleEdit}>
+          <BtnContainer>
+            <BtnText>수정하기</BtnText>
+          </BtnContainer>
+        </Pressable>
 
-        <BtnContainer>
-          <BtnText>탈퇴하기</BtnText>
-        </BtnContainer>
+        <Pressable onPress={cancleMembership}>
+          <BtnContainer>
+            <BtnText>탈퇴하기</BtnText>
+          </BtnContainer>
+        </Pressable>
 
-        <BtnContainer>
-          <BtnText>로그아웃</BtnText>
-        </BtnContainer>
+        <Pressable onPress={handleLogout}>
+          <BtnContainer>
+            <BtnText>로그아웃</BtnText>
+          </BtnContainer>
+        </Pressable>
       </Wrapper>
     );
   } else {

@@ -1,9 +1,9 @@
 import axios from "axios";
 import { store } from "./Redux/store";
 
-const ngrok_URL = "https://da48-1-225-70-39.ngrok.io";
+const ngrok_URL = "https://9d14-1-225-70-39.ngrok.io";
 const accessToken =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFiY0BnbWFpbC5jb20iLCJzdWIiOiI2MTUyNjljNmFiNmM5OTQwNzBiYzE1MzgiLCJpYXQiOjE2MzI5NjA0NDIsImV4cCI6MTY0MDE2MDQ0Mn0.jm0h4VIiZGc3j68_fwX2ByIasFx56XRzxTDTtIBeKq4";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFiY0BnbWFpbC5jb20iLCJzdWIiOiI2MTUyNjljNmFiNmM5OTQwNzBiYzE1MzgiLCJpYXQiOjE2MzMxNjIwNzYsImV4cCI6MTY0MDM2MjA3Nn0.f3xG9D0oMDJRn3HAgvmMmOF25LhZ7UBttpuh2fg6a10";
 
 //* 공개상태 데이터 가져오기
 export const getPublicRecipeData = async (page) => {
@@ -229,24 +229,28 @@ export const deleteComment = async (id) => {
 };
 
 // *  로그인
-export const login = async () => {
-  const headers = {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${accessToken}`,
-  };
+export const login = async (email, passwd) => {
   const body = {
-    email: "abc@gmail.com",
-    passwd: "abc",
+    email: email,
+    passwd: passwd,
   };
-  try {
-    return await axios.post(`${ngrok_URL}/users/login`, body, {
-      headers: headers,
+  let result;
+  await axios
+    .post(`${ngrok_URL}/users/login`, body)
+    .then((res) => {
+      result = { status: true, data: res.data };
+      // console.log("login axios post: ", res.status);
+      return;
+    })
+    .catch((error) => {
+      result = { status: false, data: error.response.data };
+      // console.log("error ", error.response.data);
+      return;
     });
-  } catch (error) {
-    console.warn(error);
-  }
+  return result;
 };
 
+// * 이미지를 s3에 올리고 URL 생성
 export const uploadToS3 = async (base64) => {
   const headers = {
     "Content-Type": "application/json",
