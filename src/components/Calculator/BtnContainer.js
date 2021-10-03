@@ -67,17 +67,24 @@ export default Btn = () => {
   const handleAdd = async (inputName, inputGram) => {
     let nutrient = {
       name: inputName,
-      calories: "0",
-      carb: "0",
-      protein: "0",
-      fat: "0",
-      sugar: "0",
+      calories: 0,
+      carb: 0,
+      protein: 0,
+      fat: 0,
+      sugar: 0,
     };
     ingredientNutrients.map((cur) => {
       if (cur.name === inputName) {
         nutrient = cur;
       }
     });
+
+    nutrient.calories = Math.ceil(nutrient.calories * 0.01 * inputGram);
+    nutrient.carb = Math.ceil(nutrient.carb * 0.01 * inputGram);
+    nutrient.protein = Math.ceil(nutrient.protein * 0.01 * inputGram);
+    nutrient.fat = Math.ceil(nutrient.fat * 0.01 * inputGram);
+    nutrient.sugar = Math.ceil(nutrient.sugar * 0.01 * inputGram);
+
     const date = new Date();
     await store.dispatch({
       type: "addIngredient",

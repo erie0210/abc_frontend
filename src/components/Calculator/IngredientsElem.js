@@ -30,7 +30,7 @@ const Nutrients = styled.Text`
 const Ingredient = styled.Text``;
 
 export default IngredientElem = (cur) => {
-  console.log("cur in ingredient elem", cur);
+  // console.log("cur in ingredient elem", cur);
   const [loaded] = Font.useFonts({
     Dela: require("../../../assets/fonts/DelaGothicOne-Regular.ttf"),
     PoorStory: require("../../../assets/fonts/PoorStory-Regular.ttf"),

@@ -39,6 +39,7 @@ const SaveText = styled.Text`
 `;
 
 export default Total = (params) => {
+  // console.log("params in total container nutrient: ", params.total_nutrition);
   const [total, setTotal] = useState("");
 
   const [loaded] = Font.useFonts({
@@ -58,7 +59,7 @@ export default Total = (params) => {
   if (loaded) {
     return (
       <Wrapper>
-        <Text>총 무게: 360(g)</Text>
+        <Text>총 무게: {params.total_gram}(g)</Text>
         <TextInput
           placeholder="총 무게 변경"
           value={total}
@@ -79,9 +80,9 @@ export default Total = (params) => {
             <SaveText>변경</SaveText>
           </SaveBtn>
         </Pressable>
-        <Text>총 열량: 320(kcal)</Text>
-        <Text>[단]: 12(g)</Text>
-        <Text>[당]: 3(g)</Text>
+        <Text>총 열량: {params.total_nutrition.calories}(kcal)</Text>
+        <Text>[단]: {params.total_nutrition.protein}(g)</Text>
+        <Text>[당]: {params.total_nutrition.sugar}(g)</Text>
       </Wrapper>
     );
   } else {

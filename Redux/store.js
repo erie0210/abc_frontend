@@ -3,7 +3,14 @@ import { createStore } from "redux";
 const init_state = {
   title: "",
   share: true,
-  total_nutrition: [{ gram: 0, calories: 0, protein: 0, sugar: 0 }],
+  total_nutrition: {
+    calories: 0,
+    carb: 0,
+    protein: 0,
+    fat: 0,
+    sugar: 0,
+  },
+  total_gram: 0,
   TRAY: [],
   contents: "",
   pictures: [],
@@ -43,7 +50,16 @@ const Reducer = (state = init_state, action) => {
     // * 재료 추가하기
     case "addIngredient":
       state.TRAY.push(action.value);
-      // console.log("add", state);
+
+      state.total_gram += parseInt(action.value.inputGram);
+
+      const nutrient = action.value.nutrient;
+      state.total_nutrition.calories += parseInt(nutrient.calories);
+      state.total_nutrition.carb += parseInt(nutrient.carb);
+      state.total_nutrition.protein += parseInt(nutrient.protein);
+      state.total_nutrition.fat += parseInt(nutrient.fat);
+      state.total_nutrition.sugar += parseInt(nutrient.sugar);
+
       return {
         ...state,
       };
@@ -51,7 +67,29 @@ const Reducer = (state = init_state, action) => {
     // * 재료 삭제하기
     case "deleteIngredient":
       const result = state.TRAY.filter((cur) => cur.id !== action.value.id);
+
+      let selected_nutrient;
+      state.TRAY.map((cur) => {
+        if (cur.id === action.value.id) {
+          selected_nutrient = cur;
+        }
+      });
+      // console.log("cur in delete ingredient: ", selected_nutrient);
+
+      state.total_gram -= parseInt(selected_nutrient.inputGram);
+
+      state.total_nutrition.calories -= parseInt(
+        selected_nutrient.nutrient.calories
+      );
+      state.total_nutrition.carb -= parseInt(selected_nutrient.nutrient.carb);
+      state.total_nutrition.protein -= parseInt(
+        selected_nutrient.nutrient.protein
+      );
+      state.total_nutrition.fat -= parseInt(selected_nutrient.nutrient.fat);
+      state.total_nutrition.sugar -= parseInt(selected_nutrient.nutrient.sugar);
+
       state.TRAY = result;
+
       return {
         ...state,
       };
