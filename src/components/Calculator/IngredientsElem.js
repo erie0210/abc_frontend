@@ -30,7 +30,7 @@ const Nutrients = styled.Text`
 const Ingredient = styled.Text``;
 
 export default IngredientElem = (cur) => {
-  // // console.log("cur in ingredient elem", cur);
+  console.log("cur in ingredient elem", cur);
   const [loaded] = Font.useFonts({
     Dela: require("../../../assets/fonts/DelaGothicOne-Regular.ttf"),
     PoorStory: require("../../../assets/fonts/PoorStory-Regular.ttf"),
@@ -56,7 +56,11 @@ export default IngredientElem = (cur) => {
           <Ingredient>
             {cur.inputName} {cur.inputGram}(g) -(%)
           </Ingredient>
-          <Nutrients>-(kcal) [탄]-(g) [단]-(g) [지]-(g) [당]-(g)</Nutrients>
+          <Nutrients>
+            {cur.nutrient.calories}(kcal) [탄]{cur.nutrient.carb}(g) [단]
+            {cur.nutrient.protein}(g) [지]{cur.nutrient.fat}(g) [당]
+            {cur.nutrient.sugar}(g)
+          </Nutrients>
         </Container>
         <Pressable onPress={() => handleDelete(cur.id)}>
           <Ionicons name="trash-bin-outline" size={20} color="black" />

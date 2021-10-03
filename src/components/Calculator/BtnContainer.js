@@ -11,6 +11,7 @@ import {
 import React, { useState } from "react";
 
 import AppLoading from "expo-app-loading";
+import { ingredientNutrients } from "../../../nutrientDB";
 import { store } from "../../../Redux/store";
 import styled from "styled-components/native";
 
@@ -59,10 +60,24 @@ export default Btn = () => {
   const onFinish = () => {};
 
   const handleReset = async () => {
-    await store.dispatch({ type: "reset" });
+    // await store.dispatch({ type: "reset" });
+    console.log("redux state: ", await store.getState());
   };
 
   const handleAdd = async (inputName, inputGram) => {
+    let nutrient = {
+      name: inputName,
+      calories: "0",
+      carb: "0",
+      protein: "0",
+      fat: "0",
+      sugar: "0",
+    };
+    ingredientNutrients.map((cur) => {
+      if (cur.name === inputName) {
+        nutrient = cur;
+      }
+    });
     const date = new Date();
     await store.dispatch({
       type: "addIngredient",
@@ -70,6 +85,7 @@ export default Btn = () => {
         id: date.toString(),
         inputName: inputName,
         inputGram: inputGram,
+        nutrient,
       },
     });
     Alert.alert("재료가 추가되었습니다.");
