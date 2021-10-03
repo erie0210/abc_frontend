@@ -10,7 +10,7 @@ import {
   TextInput,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { getUser, updateUser } from "../../../apis";
+import { cancleMembershipApi, getUser, updateUser } from "../../../apis";
 
 import AppLoading from "expo-app-loading";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -78,100 +78,111 @@ export default Profile = () => {
       return;
     }
     const res = await updateUser(userInfo._id, nickName, password);
-
-    // console.log("res in patch user info: ", res.data.data);
     await AsyncStorage.setItem("user", JSON.stringify(res.data.data));
-
     Alert.alert("수정되었습니다.");
   };
+
   const cancleMembership = async () => {
-    const res = await AsyncStorage.getItem("user");
-    console.log(res);
+    await cancleMembershipApi(userInfo._id);
+
+    const keys = await AsyncStorage.getAllKeys();
+    await AsyncStorage.multiRemove(keys);
+
+    Alert.alert("성공적으로 회원탈퇴 되었습니다.");
+    navigation.replace("SNS");
+    // const res = await AsyncStorage.getItem("user");
+    // console.log(res);
   };
 
   const navigation = useNavigation();
+
   const handleLogout = async () => {
-    await AsyncStorage.removeItem("UserInfo");
-    navigation.replace("SNS", {});
+    const keys = await AsyncStorage.getAllKeys();
+    await AsyncStorage.multiRemove(keys);
+
+    Alert.alert("로그아웃 되었습니다.");
+    navigation.replace("SNS");
   };
 
   if (loaded) {
     return (
-      <Wrapper>
-        <Image
-          source={{
-            uri: "https://d1wn0q81ehzw6k.cloudfront.net/additional/thul/media/100a676229b0c56a?w=400&h=400",
-          }}
-          style={{
-            width: WIDTH * 0.5,
-            height: WIDTH * 0.5,
-            borderRadius: WIDTH * 0.25,
-          }}
-        />
-        <TextInput
-          placeholder="닉네임 수정"
-          value={nickName}
-          onChangeText={(cur) => setNickName(cur)}
-          style={{
-            width: WIDTH * 0.7,
-            height: WIDTH * 0.5 * 0.4,
-            borderBottomColor: "lightgray",
-            borderBottomWidth: 1,
-            fontSize: 20,
-            textAlign: "center",
-            fontFamily: "PoorStory",
-          }}
-        />
-        <TextInput
-          placeholder="비밀번호 수정"
-          value={password}
-          onChangeText={(cur) => setPassword(cur)}
-          style={{
-            width: WIDTH * 0.7,
-            height: WIDTH * 0.5 * 0.4,
-            borderBottomColor: "lightgray",
-            borderBottomWidth: 1,
-            fontSize: 12,
-            textAlign: "center",
-            fontFamily: "PoorStory",
-          }}
-        />
-        <TextInput
-          placeholder="비밀번호 확인"
-          value={confirmPassword}
-          onChangeText={(cur) => setConfirmPassword(cur)}
-          style={{
-            width: WIDTH * 0.7,
-            height: WIDTH * 0.5 * 0.4,
-            borderBottomColor: "lightgray",
-            borderBottomWidth: 1,
-            fontSize: 12,
-            textAlign: "center",
-            fontFamily: "PoorStory",
-          }}
-        />
+      <ScrollView>
+        <Wrapper>
+          <Image
+            source={{
+              uri: "https://d1wn0q81ehzw6k.cloudfront.net/additional/thul/media/100a676229b0c56a?w=400&h=400",
+            }}
+            style={{
+              width: WIDTH * 0.5,
+              height: WIDTH * 0.5,
+              borderRadius: WIDTH * 0.25,
+            }}
+          />
+          <TextInput
+            placeholder="닉네임 수정"
+            value={nickName}
+            onChangeText={(cur) => setNickName(cur)}
+            style={{
+              width: WIDTH * 0.7,
+              height: WIDTH * 0.5 * 0.4,
+              borderBottomColor: "lightgray",
+              borderBottomWidth: 1,
+              fontSize: 20,
+              textAlign: "center",
+              fontFamily: "PoorStory",
+            }}
+          />
+          <TextInput
+            placeholder="비밀번호 수정"
+            value={password}
+            onChangeText={(cur) => setPassword(cur)}
+            style={{
+              width: WIDTH * 0.7,
+              height: WIDTH * 0.5 * 0.4,
+              borderBottomColor: "lightgray",
+              borderBottomWidth: 1,
+              fontSize: 12,
+              textAlign: "center",
+              fontFamily: "PoorStory",
+            }}
+          />
+          <TextInput
+            placeholder="비밀번호 확인"
+            value={confirmPassword}
+            onChangeText={(cur) => setConfirmPassword(cur)}
+            style={{
+              width: WIDTH * 0.7,
+              height: WIDTH * 0.5 * 0.4,
+              borderBottomColor: "lightgray",
+              borderBottomWidth: 1,
+              fontSize: 12,
+              textAlign: "center",
+              fontFamily: "PoorStory",
+            }}
+          />
 
-        {/* 유저 정보 수정 */}
-        <BtnWrapper>
-          <Pressable onPress={handleEdit}>
-            <BtnContainer>
-              <BtnText>수정하기</BtnText>
-            </BtnContainer>
-          </Pressable>
+          {/* 유저 정보 수정 */}
+          <BtnWrapper>
+            <Pressable onPress={handleEdit}>
+              <BtnContainer>
+                <BtnText>수정하기</BtnText>
+              </BtnContainer>
+            </Pressable>
 
-          <Pressable onPress={cancleMembership}>
-            <BtnContainer>
-              <BtnText>탈퇴하기</BtnText>
-            </BtnContainer>
-          </Pressable>
+            <Pressable onPress={cancleMembership}>
+              <BtnContainer>
+                <BtnText>탈퇴하기</BtnText>
+              </BtnContainer>
+            </Pressable>
 
-          <Pressable onPress={handleLogout}>
-            <BtnContainer>
-              <BtnText>로그아웃</BtnText>
-            </BtnContainer>
-          </Pressable>
-        </BtnWrapper>
-      </Wrapper>
+            <Pressable onPress={handleLogout}>
+              <BtnContainer>
+                <BtnText>로그아웃</BtnText>
+              </BtnContainer>
+            </Pressable>
+          </BtnWrapper>
+        </Wrapper>
+      </ScrollView>
     );
   } else {
     return (

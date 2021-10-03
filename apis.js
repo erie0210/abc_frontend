@@ -34,7 +34,10 @@ export const cachePrivateReicpe = async () => {
     "Content-Type": "application/json",
     Authorization: `Bearer ${accessToken}`,
   };
-  const userId = "615922e075d9da472c64491a";
+
+  const res = await AsyncStorage.getItem("user");
+  const user = JSON.parse(res);
+  const userId = user._id;
   try {
     const result = await axios.get(`${ngrok_URL}/recipes/private/${userId}`, {
       headers: headers,
@@ -47,12 +50,15 @@ export const cachePrivateReicpe = async () => {
 
 // * 특정 유저의 카테고리 데이터 가져오기
 export const getPrivateRecipeData = async (category, page) => {
+  const res = await AsyncStorage.getItem("user");
+  const user = JSON.parse(res);
+  const userId = user._id;
+
   // console.log("get public recipe data", category, page);
   const headers = {
     "Content-Type": "application/json",
     Authorization: `Bearer ${accessToken}`,
   };
-  const userId = "615922e075d9da472c64491a";
   try {
     const result = await axios.get(
       `${ngrok_URL}/recipes/private/${category}/${userId}/${page}`,
@@ -68,6 +74,10 @@ export const getPrivateRecipeData = async (category, page) => {
 
 //* public - detailed 에서 내 레시피에 답기
 export const postPublicRecipeToMyList = async (recipe) => {
+  const res = await AsyncStorage.getItem("user");
+  const user = JSON.parse(res);
+  const userId = user._id;
+
   const { title, contents, ingredients, nutrition, author } = recipe;
   console.log("recipe", recipe);
   try {
@@ -86,7 +96,7 @@ export const postPublicRecipeToMyList = async (recipe) => {
       star: 1,
       ingredients: [],
       nutrition: [{ gram: "90", calories: "240", protein: "12", sugar: "16" }],
-      author: "615922e075d9da472c64491a",
+      author: userId,
     };
     const result = await axios.post(`${ngrok_URL}/recipes/`, newRecipe, {
       headers: headers,
@@ -121,6 +131,10 @@ export const search = async (keyword, page, sort) => {
 
 // * Recipe 생성
 export const createRecipe = async (state) => {
+  const res = await AsyncStorage.getItem("user");
+  const user = JSON.parse(res);
+  const userId = user._id;
+
   // console.log("createRecipe");
   const headers = {
     "Content-Type": "application/json",
@@ -142,7 +156,7 @@ export const createRecipe = async (state) => {
     star: 3,
     ingredients: TRAY,
     nutrition: total_nutrition,
-    author: "615922e075d9da472c64491a",
+    author: userId,
   };
 
   try {
@@ -320,11 +334,24 @@ export const updateUser = async (id, nickName, password) => {
 
 // * 특정 유저 정보 가져오기
 export const getUser = async () => {
-  const tmpId = "615922e075d9da472c64491a";
+  const res = await AsyncStorage.getItem("user");
+  const user = JSON.parse(res);
+  const userId = user._id;
   try {
-    const res = await axios.get(`${ngrok_URL}/users/update/${tmpId}`);
+    const res = await axios.get(`${ngrok_URL}/users/update/${userId}`);
     // console.log("getUser res", res.data);
     return res.data.data;
+  } catch (error) {
+    console.warn(error);
+  }
+};
+
+// * 탈퇴하기
+export const cancleMembershipApi = async (id) => {
+  try {
+    const res = await axios.delete(`${ngrok_URL}/users/${id}`);
+    console.log("getUser res", res);
+    return;
   } catch (error) {
     console.warn(error);
   }
