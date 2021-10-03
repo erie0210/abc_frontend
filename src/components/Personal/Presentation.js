@@ -50,6 +50,14 @@ const LoadingContainer = styled.View`
   margin: auto;
 `;
 const LoadingBtn = styled.Text``;
+const NoResult = styled.View`
+  background-color: #318cee;
+  height: ${HEIGHT}*0.5px;
+  width: ${WIDTH}px;
+`;
+const NoResultText = styled.Text`
+  font-family: "PoorStory";
+`;
 
 export default PersonalPresentation = ({ recipes }) => {
   const [category, setCategory] = useState("star");
@@ -156,11 +164,17 @@ export default PersonalPresentation = ({ recipes }) => {
           </Pressable>
 
           {/* ListContainer */}
-          <ListContainer>
-            {data.data.map((cur) => (
-              <ListElem key={cur._id} {...cur} />
-            ))}
-          </ListContainer>
+          {data ? (
+            <ListContainer>
+              {data.data.map((cur) => (
+                <ListElem key={cur._id} {...cur} />
+              ))}
+            </ListContainer>
+          ) : (
+            <NoResult>
+              <NoResultText>아직 레시피가 없습닌다.</NoResultText>
+            </NoResult>
+          )}
 
           {/* 추가로딩 */}
           <Pressable onPress={handleLoading}>

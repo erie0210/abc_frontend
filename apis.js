@@ -2,9 +2,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { store } from "./Redux/store";
 
-const ngrok_URL = "https://9d14-1-225-70-39.ngrok.io";
+const ngrok_URL = "https://7f49-1-225-70-39.ngrok.io";
 const accessToken =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFiY0BnbWFpbC5jb20iLCJzdWIiOiI2MTUyNjljNmFiNmM5OTQwNzBiYzE1MzgiLCJpYXQiOjE2MzMxNjIwNzYsImV4cCI6MTY0MDM2MjA3Nn0.f3xG9D0oMDJRn3HAgvmMmOF25LhZ7UBttpuh2fg6a10";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFiY0BnbWFpbC5jb20iLCJzdWIiOiI2MTU5MjJlMDc1ZDlkYTQ3MmM2NDQ5MWEiLCJpYXQiOjE2MzMyMzIxNjcsImV4cCI6MTY0MDQzMjE2N30.6kVQpCEByxiBaAHvwejUzshW_UNs02bC_vogpSBxE0Q";
 
 //* 공개상태 데이터 가져오기
 export const getPublicRecipeData = async (page) => {
@@ -34,7 +34,7 @@ export const cachePrivateReicpe = async () => {
     "Content-Type": "application/json",
     Authorization: `Bearer ${accessToken}`,
   };
-  const userId = "615269c6ab6c994070bc1538";
+  const userId = "615922e075d9da472c64491a";
   try {
     const result = await axios.get(`${ngrok_URL}/recipes/private/${userId}`, {
       headers: headers,
@@ -52,7 +52,7 @@ export const getPrivateRecipeData = async (category, page) => {
     "Content-Type": "application/json",
     Authorization: `Bearer ${accessToken}`,
   };
-  const userId = "615269c6ab6c994070bc1538";
+  const userId = "615922e075d9da472c64491a";
   try {
     const result = await axios.get(
       `${ngrok_URL}/recipes/private/${category}/${userId}/${page}`,
@@ -86,7 +86,7 @@ export const postPublicRecipeToMyList = async (recipe) => {
       star: 1,
       ingredients: [],
       nutrition: [{ gram: "90", calories: "240", protein: "12", sugar: "16" }],
-      author: "615269c6ab6c994070bc1538",
+      author: "615922e075d9da472c64491a",
     };
     const result = await axios.post(`${ngrok_URL}/recipes/`, newRecipe, {
       headers: headers,
@@ -142,7 +142,7 @@ export const createRecipe = async (state) => {
     star: 3,
     ingredients: TRAY,
     nutrition: total_nutrition,
-    author: "615269c6ab6c994070bc1538",
+    author: "615922e075d9da472c64491a",
   };
 
   try {
@@ -297,10 +297,7 @@ export const uploadToS3 = async (base64) => {
 };
 
 // * 회원 정보 수정
-export const updateUser = async (nickName, password) => {
-  const userData = await AsyncStorage.getItem("UserInfo");
-  const user = JSON.parse(userData).data.data.user;
-
+export const updateUser = async (id, nickName, password) => {
   const headers = {
     "Content-Type": "application/json",
     Authorization: `Bearer ${accessToken}`,
@@ -309,11 +306,13 @@ export const updateUser = async (nickName, password) => {
     nickname: nickName,
     passwd: password,
   };
-  const tmpId = "615269c6ab6c994070bc1538";
+  // const tmpId = "615922e075d9da472c64491a";
   try {
-    return await axios.patch(`${ngrok_URL}/users/update/${tmpId}`, body, {
+    const res = await axios.patch(`${ngrok_URL}/users/update/${id}`, body, {
       headers: headers,
     });
+    // console.log("res in updateUser apis: ", res);
+    return res;
   } catch (error) {
     console.warn(error);
   }
@@ -321,7 +320,7 @@ export const updateUser = async (nickName, password) => {
 
 // * 특정 유저 정보 가져오기
 export const getUser = async () => {
-  const tmpId = "615269c6ab6c994070bc1538";
+  const tmpId = "615922e075d9da472c64491a";
   try {
     const res = await axios.get(`${ngrok_URL}/users/update/${tmpId}`);
     // console.log("getUser res", res.data);

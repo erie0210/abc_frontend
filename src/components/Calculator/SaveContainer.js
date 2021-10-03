@@ -127,7 +127,7 @@ export default Save = (params) => {
 
         <Pressable onPress={() => handleSave(title)}>
           <SaveBtn>
-            <SaveText>저장하기</SaveText>
+            <SaveText>저장</SaveText>
           </SaveBtn>
         </Pressable>
       </Wrapper>

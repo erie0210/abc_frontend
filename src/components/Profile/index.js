@@ -9,7 +9,7 @@ import {
   Text,
   TextInput,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getUser, updateUser } from "../../../apis";
 
 import AppLoading from "expo-app-loading";
@@ -49,7 +49,9 @@ const BtnText = styled.Text`
 `;
 
 export default Profile = () => {
+  const [userInfo, setUserInfo] = useState();
   const [nickName, setNickName] = useState("");
+  const [initNickName, setInitNickName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
@@ -61,21 +63,31 @@ export default Profile = () => {
 
   const loadAssets = async () => {
     const loadUser = await getUser();
-    console.log(loadUser.nickname);
-    await AsyncStorage.setItem("UserInfo");
+    setUserInfo(loadUser);
+    setNickName(loadUser.nickname);
+    setInitNickName(loadUser.nickname);
+    // console.log(loadUser.nickname);
     // const userData = await AsyncStorage.getItem("UserInfo");
     // const user = JSON.parse(userData).data.data.user;
-    setNickName(loadUser.nickname);
   };
   const onFinish = () => {};
 
   const handleEdit = async () => {
-    const res = await updateUser(nickName, password);
+    if (nickName === initNickName && password === "") {
+      Alert.alert("수정할 내용을 입력해주세요.");
+      return;
+    }
+    const res = await updateUser(userInfo._id, nickName, password);
+
     // console.log("res in patch user info: ", res.data.data);
+    await AsyncStorage.setItem("user", JSON.stringify(res.data.data));
+
     Alert.alert("수정되었습니다.");
-    navigation.goBack();
   };
-  const cancleMembership = () => {};
+  const cancleMembership = async () => {
+    const res = await AsyncStorage.getItem("user");
+    console.log(res);
+  };
 
   const navigation = useNavigation();
   const handleLogout = async () => {

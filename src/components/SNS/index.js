@@ -75,7 +75,18 @@ export default Profile = () => {
 
     const res = await login(email, passwd);
     if (res.status === true) {
+      // * set Local Storage: token, refresh token, hashed token, user
       await AsyncStorage.setItem("UserInfo", JSON.stringify(res));
+      await AsyncStorage.setItem("token", JSON.stringify(res.data.data.token));
+      await AsyncStorage.setItem(
+        "refreshToken",
+        JSON.stringify(res.data.data.refreshToken)
+      );
+      await AsyncStorage.setItem(
+        "hashedToken",
+        JSON.stringify(res.data.data.hashedToken)
+      );
+      await AsyncStorage.setItem("user", JSON.stringify(res.data.data.user));
 
       console.log("로그인 통신 성공");
       navigation.replace("Tab");

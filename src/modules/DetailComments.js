@@ -66,7 +66,7 @@ export default DetailComments = (cur) => {
 
   const navigation = useNavigation();
   const submit = async (targetId, author, contents) => {
-    await createComment(targetId, "615269c6ab6c994070bc1538", contents);
+    await createComment(targetId, "615922e075d9da472c64491a", contents);
     Alert.alert("댓글이 작성되었습니다.");
     navigation.goBack();
   };
