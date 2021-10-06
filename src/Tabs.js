@@ -1,5 +1,5 @@
 import { AntDesign } from "@expo/vector-icons";
-import Bakery from "./components/Bakery";
+import Bakery from "./components/Bakery/Container";
 import Calculator from "./components/Calculator/Container";
 import { Entypo } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";

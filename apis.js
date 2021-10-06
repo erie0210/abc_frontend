@@ -2,7 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { store } from "./Redux/store";
 
-const ngrok_URL = "https://7f49-1-225-70-39.ngrok.io";
+const ngrok_URL = "https://86d7-1-225-70-39.ngrok.io";
 const accessToken =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFiY0BnbWFpbC5jb20iLCJzdWIiOiI2MTU5MjJlMDc1ZDlkYTQ3MmM2NDQ5MWEiLCJpYXQiOjE2MzMyMzIxNjcsImV4cCI6MTY0MDQzMjE2N30.6kVQpCEByxiBaAHvwejUzshW_UNs02bC_vogpSBxE0Q";
 
@@ -227,6 +227,31 @@ export const createComment = async (targetId, author, contents) => {
   }
 };
 
+// * 베이커리댓글 생성
+export const createBakeryComment = async (targetId, author, contents) => {
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${accessToken}`,
+  };
+
+  const newComment = {
+    author: author,
+    contents: contents,
+  };
+  try {
+    const result = await axios.post(
+      `${ngrok_URL}/comments/bakery/${targetId}`,
+      newComment,
+      {
+        headers: headers,
+      }
+    );
+    return result;
+  } catch (error) {
+    console.warn(error);
+  }
+};
+
 // * 댓글 삭제
 export const deleteComment = async (id) => {
   const headers = {
@@ -354,5 +379,23 @@ export const cancleMembershipApi = async (id) => {
     return;
   } catch (error) {
     console.warn(error);
+  }
+};
+
+//* 베이커리 모든 정보 가져오기
+export const getBakeryData = async (page) => {
+  // console.log("get public recipe data");
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${accessToken}`,
+  };
+  try {
+    const result = await axios.get(`${ngrok_URL}/bakery/${page}`, {
+      headers: headers,
+    });
+    // console.log(JSON.parse(result.request._response));
+    return result.data;
+  } catch (e) {
+    console.warn(e);
   }
 };

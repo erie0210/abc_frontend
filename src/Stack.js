@@ -2,6 +2,8 @@ import React, { useState } from "react";
 
 import AppLoading from "expo-app-loading";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Bakery from "./components/Bakery/Container";
+import BakeryDetailed from "./components/BakeryDetailed";
 import Calculator from "./components/Calculator/Container";
 import PersonalDetailed from "./components/PersonalDetailed";
 import Profile from "./components/Profile";
@@ -51,6 +53,8 @@ export default Basic = () => {
           <Stack.Screen name="Profile" component={Profile} />
           <Stack.Screen name="SNS" component={SNS} />
           <Stack.Screen name="Register" component={Register} />
+          <Stack.Screen name="Bakery" component={Bakery} />
+          <Stack.Screen name="BakeryDetailed" component={BakeryDetailed} />
         </>
       ) : (
         <>
@@ -62,6 +66,7 @@ export default Basic = () => {
           <Stack.Screen name="Calculator" component={Calculator} />
           <Stack.Screen name="PersonalDetailed" component={PersonalDetailed} />
           <Stack.Screen name="Profile" component={Profile} />
+          <Stack.Screen name="Bakery" component={Bakery} />
         </>
       )}
     </Stack.Navigator>
