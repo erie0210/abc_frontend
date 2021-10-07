@@ -417,3 +417,25 @@ export const getBakeryData = async (page) => {
     console.warn(e);
   }
 };
+
+// * 좋아요 수 올리기
+export const plusLike = async (id) => {
+  try {
+    const res = await axios.patch(`${ngrok_URL}/recipes/plus/${id}`);
+    // console.log("getUser res", res.data);
+    return res.data;
+  } catch (error) {
+    console.warn(error);
+  }
+};
+
+// * 좋아요 수 줄이기
+export const minusLike = async (id) => {
+  try {
+    const res = await axios.patch(`${ngrok_URL}/recipes/minus/${id}`);
+    // console.log("getUser res", res.data);
+    return res.data;
+  } catch (error) {
+    console.warn(error);
+  }
+};

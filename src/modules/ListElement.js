@@ -7,6 +7,7 @@ import AppLoading from "expo-app-loading";
 import Comments from "./Comments";
 import DoubleTap from "./DoubleTap";
 import Reaction from "./ReactionElem";
+import { plusLike } from "../../apis";
 import styled from "styled-components/native";
 import { useNavigation } from "@react-navigation/native";
 
@@ -40,6 +41,9 @@ export default Register = ({ cur }) => {
   // console.log(cur);
   const loadAssets = () => {};
   const onFinish = () => {};
+  const handleLike = async (id) => {
+    await plusLike(id);
+  };
 
   if (loaded) {
     return (
@@ -48,8 +52,8 @@ export default Register = ({ cur }) => {
 
         <DoubleTap
           delay={200}
-          onPress={() => console.log("press")}
-          doublePress={() => console.log("double tap")}
+          onPress={() => goToDetail(cur)}
+          doublePress={() => handleLike(cur._id)}
         >
           <Image
             source={{ uri: cur.pictures[0] }}
