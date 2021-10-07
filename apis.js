@@ -2,7 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { store } from "./Redux/store";
 
-const ngrok_URL = "https://86d7-1-225-70-39.ngrok.io";
+const ngrok_URL = "https://733e-1-225-70-39.ngrok.io";
 const accessToken =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFiY0BnbWFpbC5jb20iLCJzdWIiOiI2MTU5MjJlMDc1ZDlkYTQ3MmM2NDQ5MWEiLCJpYXQiOjE2MzMyMzIxNjcsImV4cCI6MTY0MDQzMjE2N30.6kVQpCEByxiBaAHvwejUzshW_UNs02bC_vogpSBxE0Q";
 
@@ -20,6 +20,24 @@ export const getPublicRecipeData = async (page) => {
         headers: headers,
       }
     );
+    // console.log(JSON.parse(result.request._response));
+    return result.data;
+  } catch (e) {
+    console.warn(e);
+  }
+};
+
+//* 특정 레시피 데이터 가져오기
+export const getOneRecipeData = async (id) => {
+  // console.log("get public recipe data");
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${accessToken}`,
+  };
+  try {
+    const result = await axios.get(`${ngrok_URL}/recipes/${id}`, {
+      headers: headers,
+    });
     // console.log(JSON.parse(result.request._response));
     return result.data;
   } catch (e) {

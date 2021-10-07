@@ -26,8 +26,9 @@ export default RecipesContainer = () => {
   });
 
   const getData = async () => {
+    console.log("getData working");
     const res = await getPublicRecipeData(1);
-    // console.log(res);
+    console.log("res in public recipe container: ", res);
     setRecipes({
       loading: false,
       recipes: res,
@@ -36,6 +37,7 @@ export default RecipesContainer = () => {
     setReady(true);
   };
 
+  // getData();
   // store.subscribe(() => getData());
   const navigation = useNavigation();
   useEffect(() => {

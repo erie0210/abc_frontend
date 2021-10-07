@@ -31,9 +31,10 @@ const LoadingBtn = styled.Text``;
 //   });
 // };
 
-export default RecipesPresentation = ({ refreshFn, loading, recipes }) => {
+export default RecipesPresentation = ({ recipes }) => {
   const [page, setPage] = useState(1);
-  const [data, setData] = useState(recipes);
+  const [data, setData] = useState(recipes.data);
+  // console.log("recipes in public recipes presentation", recipes.data[0]);
   // * Pulldown to refresh
   // const [refreshing, setRefreshing] = useState(false);
   // const [recipe, setRecipe] = useState({ recipes });
@@ -70,7 +71,7 @@ export default RecipesPresentation = ({ refreshFn, loading, recipes }) => {
       // }
       >
         <Wrapper>
-          {data.data.map((cur) => (
+          {data.map((cur) => (
             <Recipe key={cur._id} cur={cur} />
           ))}
         </Wrapper>

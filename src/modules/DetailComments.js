@@ -10,7 +10,7 @@ import {
   TextInput,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { createComment, deleteComment } from "../../apis";
+import { createComment, deleteComment, getOneRecipeData } from "../../apis";
 
 import AppLoading from "expo-app-loading";
 import { Ionicons } from "@expo/vector-icons";
@@ -47,6 +47,7 @@ const Comment = styled.View`
 
 export default DetailComments = (cur) => {
   const [contents, setContents] = useState("");
+  const [data, setData] = useState(cur);
 
   // console.log("cur in comments: ", cur);
   const [loaded] = Font.useFonts({
@@ -60,22 +61,25 @@ export default DetailComments = (cur) => {
 
   const handleDeleteComment = async (id) => {
     await deleteComment(id);
+    const res = await getOneRecipeData(data._id);
     Alert.alert("댓글이 삭제되었습니다.");
-    navigation.goBack();
+    setData(res.data);
   };
 
   const navigation = useNavigation();
   const submit = async (targetId, author, contents) => {
     await createComment(targetId, "615922e075d9da472c64491a", contents);
+    const res = await getOneRecipeData(data._id);
     Alert.alert("댓글이 작성되었습니다.");
-    navigation.goBack();
+    setData(res.data);
+    // navigation.goBack();
   };
 
   if (loaded) {
     return (
       <Wrapper>
         <CommentContainer>
-          {cur.comments.map((cur) => (
+          {data.comments.map((cur) => (
             <Comment key={`${cur._id}+Comment`}>
               <TextContainer key={`${cur._id}+TextContainer`}>
                 <CommentText

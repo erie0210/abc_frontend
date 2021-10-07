@@ -56,19 +56,20 @@ export default Register = ({ cur }) => {
               marginRight: "auto",
             }}
           />
+
+          <Reaction {...cur} />
+          <NutritionInfoContainer>
+            <NutritionInto>영양정보: 75(g) 150kcal</NutritionInto>
+            <Text>단백질 4(g) 당류 2(g)</Text>
+            <Text>별점 ⭐ {cur.star} / 5</Text>
+            <Text>
+              {cur.contents.length > 40
+                ? cur.contents.slice(0, 40) + ` [ 더보기... ]`
+                : cur.contents}
+            </Text>
+          </NutritionInfoContainer>
+          <Comments {...cur} />
         </Pressable>
-        <Reaction {...cur} />
-        <NutritionInfoContainer>
-          <NutritionInto>영양정보: 75(g) 150kcal</NutritionInto>
-          <Text>단백질 4(g) 당류 2(g)</Text>
-          <Text>별점 ⭐ {cur.star} / 5</Text>
-          <Text>
-            {cur.contents.length > 40
-              ? cur.contents.slice(0, 40) + ` [ 더보기... ]`
-              : cur.contents}
-          </Text>
-        </NutritionInfoContainer>
-        <Comments {...cur} />
       </Wrapper>
     );
   } else {
