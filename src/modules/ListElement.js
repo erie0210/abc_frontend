@@ -24,6 +24,7 @@ const NutritionInfoContainer = styled.View``;
 const NutritionInto = styled.Text``;
 
 export default Register = ({ cur }) => {
+  // console.log("cur in listelement : ", cur);
   const [loaded] = Font.useFonts({
     Dela: require("../../assets/fonts/DelaGothicOne-Regular.ttf"),
     PoorStory: require("../../assets/fonts/PoorStory-Regular.ttf"),

@@ -1,6 +1,7 @@
 import * as Font from "expo-font";
 
 import {
+  ActivityIndicator,
   Dimensions,
   Pressable,
   RefreshControl,
@@ -31,10 +32,11 @@ const LoadingBtn = styled.Text``;
 //   });
 // };
 
-export default RecipesPresentation = ({ recipes }) => {
+export default RecipesPresentation = ({ refreshFn, loading, recipes }) => {
   const [page, setPage] = useState(1);
-  const [data, setData] = useState(recipes.data);
-  // console.log("recipes in public recipes presentation", recipes.data[0]);
+  const [data, setData] = useState(recipes);
+  // console.log("recipes: ", data);
+  console.log("loading", loading);
   // * Pulldown to refresh
   // const [refreshing, setRefreshing] = useState(false);
   // const [recipe, setRecipe] = useState({ recipes });
@@ -48,7 +50,12 @@ export default RecipesPresentation = ({ recipes }) => {
   //   wait(2000).then(() => setRefreshing(false));
   // }, []);
 
-  const [loaded] = Font.useFonts({
+  // const [loaded] = Font.useFonts({
+  //   PoorStory: require("../../../assets/fonts/DelaGothicOne-Regular.ttf"),
+  //   PoorStory: require("../../../assets/fonts/PoorStory-Regular.ttf"),
+  // });
+
+  Font.useFonts({
     PoorStory: require("../../../assets/fonts/DelaGothicOne-Regular.ttf"),
     PoorStory: require("../../../assets/fonts/PoorStory-Regular.ttf"),
   });
@@ -63,7 +70,7 @@ export default RecipesPresentation = ({ recipes }) => {
     setPage(page + 1);
   };
 
-  if (loaded) {
+  if (loading) {
     return (
       <ScrollView
       // refreshControl={
@@ -71,7 +78,7 @@ export default RecipesPresentation = ({ recipes }) => {
       // }
       >
         <Wrapper>
-          {data.map((cur) => (
+          {recipes.data.map((cur) => (
             <Recipe key={cur._id} cur={cur} />
           ))}
         </Wrapper>
@@ -86,11 +93,14 @@ export default RecipesPresentation = ({ recipes }) => {
     );
   } else {
     return (
-      <AppLoading
-        startAsync={loadAssets}
-        onFinish={onFinish}
-        onError={console.warn}
-      />
+      // <AppLoading
+      //   startAsync={loadAssets}
+      //   onFinish={onFinish}
+      //   onError={console.warn}
+      // />
+      <Wrapper>
+        <ActivityIndicator color="#BB6767" size="large" />
+      </Wrapper>
     );
   }
 };
