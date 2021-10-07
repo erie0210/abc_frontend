@@ -5,6 +5,7 @@ import React, { useState } from "react";
 
 import AppLoading from "expo-app-loading";
 import Comments from "./Comments";
+import DoubleTap from "./DoubleTap";
 import Reaction from "./ReactionElem";
 import styled from "styled-components/native";
 import { useNavigation } from "@react-navigation/native";
@@ -44,9 +45,11 @@ export default Register = ({ cur }) => {
     return (
       <Wrapper>
         <Title>{cur.title}</Title>
-        <Pressable
-          onPress={() => goToDetail(cur)}
-          android_ripple={{ color: "#2D9CF0" }}
+
+        <DoubleTap
+          delay={200}
+          onPress={() => console.log("press")}
+          doublePress={() => console.log("double tap")}
         >
           <Image
             source={{ uri: cur.pictures[0] }}
@@ -57,7 +60,11 @@ export default Register = ({ cur }) => {
               marginRight: "auto",
             }}
           />
-
+        </DoubleTap>
+        <Pressable
+          onPress={() => goToDetail(cur)}
+          android_ripple={{ color: "#2D9CF0" }}
+        >
           <Reaction {...cur} />
           <NutritionInfoContainer>
             <NutritionInto>영양정보: 75(g) 150kcal</NutritionInto>
