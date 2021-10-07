@@ -1,6 +1,13 @@
 import * as Font from "expo-font";
 
-import { Dimensions, Image, Pressable, ScrollView, Text } from "react-native";
+import {
+  Alert,
+  Dimensions,
+  Image,
+  Pressable,
+  ScrollView,
+  Text,
+} from "react-native";
 import React, { useState } from "react";
 
 import AppLoading from "expo-app-loading";
@@ -41,19 +48,14 @@ export default Register = ({ cur }) => {
   // console.log(cur);
   const loadAssets = () => {};
   const onFinish = () => {};
-  const handleLike = async (id) => {
-    await plusLike(id);
-  };
 
   if (loaded) {
     return (
       <Wrapper>
         <Title>{cur.title}</Title>
-
-        <DoubleTap
-          delay={200}
+        <Pressable
           onPress={() => goToDetail(cur)}
-          doublePress={() => handleLike(cur._id)}
+          android_ripple={{ color: "#2D9CF0" }}
         >
           <Image
             source={{ uri: cur.pictures[0] }}
@@ -64,11 +66,7 @@ export default Register = ({ cur }) => {
               marginRight: "auto",
             }}
           />
-        </DoubleTap>
-        <Pressable
-          onPress={() => goToDetail(cur)}
-          android_ripple={{ color: "#2D9CF0" }}
-        >
+
           <Reaction {...cur} />
           <NutritionInfoContainer>
             <NutritionInto>영양정보: 75(g) 150kcal</NutritionInto>

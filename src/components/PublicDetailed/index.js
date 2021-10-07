@@ -10,12 +10,13 @@ import {
   Text,
 } from "react-native";
 import React, { useState } from "react";
+import { plusLike, postPublicRecipeToMyList } from "../../../apis";
 
 import AppLoading from "expo-app-loading";
 import Comments from "../../modules/DetailComments";
+import DoubleTap from "../../modules/DoubleTap";
 import Reaction from "../../modules/ReactionElem";
 import RecipeList from "../../modules/RecipeList";
-import { postPublicRecipeToMyList } from "../../../apis";
 import { store } from "../../../Redux/store";
 import styled from "styled-components/native";
 import { useNavigation } from "@react-navigation/native";
@@ -73,21 +74,34 @@ export default PublicDetailed = ({
     navigation.navigate("Calculator", {});
   };
 
+  const Navigation = useNavigation();
+  const handleLike = async (id) => {
+    // like 했는 지 확인해서 있다면 이미 추가헀습니다. 아니라면 좋아요 추가
+    await plusLike(id);
+    Alert.alert("좋아요 +1 되었습니다.");
+  };
+
   if (loaded) {
     return (
       <ScrollView>
         <Wrapper>
           {/* 레시피 제목과 이미지 */}
           <Title>{cur.title}</Title>
-          <Image
-            source={{ uri: cur.pictures[0] }}
-            style={{
-              width: WIDTH,
-              height: WIDTH * 0.8,
-              marginLeft: "auto",
-              marginRight: "auto",
-            }}
-          />
+          <DoubleTap
+            delay={200}
+            onPress={() => {}}
+            doublePress={() => handleLike(cur._id)}
+          >
+            <Image
+              source={{ uri: cur.pictures[0] }}
+              style={{
+                width: WIDTH,
+                height: WIDTH * 0.8,
+                marginLeft: "auto",
+                marginRight: "auto",
+              }}
+            />
+          </DoubleTap>
           {/* 좋아요, 댓글 수 */}
           <Reaction {...cur} />
           {/* 영양정보 */}

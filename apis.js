@@ -173,7 +173,7 @@ export const createRecipe = async (state) => {
     ],
     star: 3,
     ingredients: TRAY,
-    nutrition: total_nutrition,
+    nutrition: [total_nutrition],
     author: userId,
   };
 

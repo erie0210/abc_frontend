@@ -8,7 +8,7 @@ import Calculator from "./components/Calculator/Container";
 import PersonalDetailed from "./components/PersonalDetailed";
 import Profile from "./components/Profile";
 import PublicDetailed from "./components/PublicDetailed";
-import PublicRecipes from "./components/PublicRecipes";
+import PublicRecipes from "./components/PublicRecipes/Container";
 import Register from "./components/Register";
 import SNS from "./components/SNS";
 import Tab from "./Tabs";
