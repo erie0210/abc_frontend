@@ -2,7 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { store } from "./Redux/store";
 
-const ngrok_URL = "https://733e-1-225-70-39.ngrok.io";
+const ngrok_URL = "https://4501-1-225-70-39.ngrok.io";
 const accessToken =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFiY0BnbWFpbC5jb20iLCJzdWIiOiI2MTU5MjJlMDc1ZDlkYTQ3MmM2NDQ5MWEiLCJpYXQiOjE2MzMyMzIxNjcsImV4cCI6MTY0MDQzMjE2N30.6kVQpCEByxiBaAHvwejUzshW_UNs02bC_vogpSBxE0Q";
 
